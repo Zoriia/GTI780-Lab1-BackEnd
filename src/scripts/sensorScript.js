@@ -11,23 +11,17 @@ const DATA_COLUMNS = [
     'Timestamp'
 ]
 
-export interface CsvEntry {
-    Humidity: number
-    Temperature: number
-    Timestamp: Date
-}
-
-command.stdout.on('data', async function (data: string) {
+command.stdout.on('data', async function (data) {
     const dataTable = data.split(',')
 
     await pushNewData(dataTable)
 })
 
-command.stderr.on('data', function (data: string) {
+command.stderr.on('data', function (data) {
     console.log('Une erreur s\'est produite. Erreur:' + data)
 })
 
-async function pushNewData(data: any[]): Promise<void> {
+async function pushNewData(data) {
     const filePath = path.resolve(__dirname, '..', '..', 'data', 'results.csv')
     const text = await readFile(filePath)
 
@@ -35,9 +29,9 @@ async function pushNewData(data: any[]): Promise<void> {
         const parser = parse(text, {
             columns: DATA_COLUMNS
         })
-        const newData: any[] = []
+        const newData = []
         parser.on('readable', function () {
-            let record: CsvEntry
+            let record
             while ((record = parser.read()) != null) {
                 newData.push(record)
             }
@@ -61,7 +55,7 @@ async function pushNewData(data: any[]): Promise<void> {
     })
 }
 
-async function readFile(path: string): Promise<string> {
+async function readFile(path){
     return await new Promise(function (resolve, reject) {
         fs.readFile(path, { encoding: 'utf-8' }, function (err, data) {
             if (err != null) {
