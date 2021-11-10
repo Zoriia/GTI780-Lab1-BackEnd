@@ -29,15 +29,19 @@ async function pushNewData(data) {
 
     return await new Promise(function (resolve, reject) {
         const parser = parse(text, {
-            columns: DATA_COLUMNS
+            columns: DATA_COLUMNS,
+            from_line: 2
         })
         const newData = []
         parser.on('readable', function () {
             console.log('Read started')
             let record
             while ((record = parser.read()) != null) {
-                console.log('New record read')
-                newData.push(record)
+                const recordHum = record['Humidity']
+                const recordTemp = record['Temperature']
+                const recordTime = record['Timestamp']
+                console.log('Humidite: ' + recordHum + ', Temp :' + recordTemp + ', Time :' + recordTime)
+                newData.push(recordHum + ',' + recordTemp + ',' + recordTime)
             }
         })
 
@@ -46,16 +50,19 @@ async function pushNewData(data) {
         })
         
         const humidity = data[0]
-        const temperature = data[1]
+        const temperature = data[1].replace(/(\r\n|\n|\r)/gm, '')
         parser.on('end', function () {
             console.log('Reading ended')
-            if (newData.length > 30)
-                newData.splice(1,1)
+            if (newData.length >= 50)
+                newData.splice(0,1)
             const today = new Date()
-            newData.push({humidity, temperature, today})
+            const todayText = today.toLocaleString('en-US', { hour12: false }).replace(',','')
+            console.log(humidity + ',' + temperature + ',' + todayText)
+            newData.push(`${humidity},${temperature},${todayText}`)
             console.log('New record added')
-            const output = newData.join("\n")
-            fs.writeFileSync('new.csv', output);
+            let output = newData.join("\n")
+            output = 'Humidity,Temperature,Timestamp\n' + output
+            fs.writeFileSync('../../data/results.csv', output);
             console.log('New csv written')
             resolve()
         })
