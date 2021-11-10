@@ -26,7 +26,7 @@ export async function getCurrentTemperature(): Promise<any> {
   if (allTemp.length === 0)
     throw new Error("Aucune température n'est disponible");
 
-  return Object.values(allTemp.pop() || {timestamp: new Date(), temperature: 0})
+  return allTemp.pop()?.temperature || 0
 }
 
 export async function getTemperatureEntries(nbOfEntries: number): Promise<any[]> {

@@ -4,6 +4,7 @@ import morgan from 'morgan'
 import cors from 'cors'
 import helmet from 'helmet'
 import { json } from 'body-parser'
+
 require('child_process').fork('src/scripts/sensorScript.js')
 
 import routes from './routes/index.js'
