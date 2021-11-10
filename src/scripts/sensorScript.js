@@ -1,6 +1,6 @@
-import parse from 'csv-parse'
-import path from 'path';
-import fs from 'fs'
+var parse = require('csv-parse').parse
+var path = require('path')()
+var fs = require('fs')()
 var spawn = require('child_process').spawn
 
 const command = spawn('sudo', ['python3', 'humid.py']);
