@@ -3,7 +3,7 @@ var path = require('path')
 var fs = require('fs')
 var spawn = require('child_process').spawn
 
-const command = spawn('sudo', ['python3', 'humid.py']);
+const command = spawn('sudo', ['python3', 'src/scripts/humid.py']);
 
 const DATA_COLUMNS = [
     'Humidity',
@@ -22,7 +22,7 @@ command.stderr.on('data', function (data) {
 })
 
 async function pushNewData(data) {
-    const filePath = path.resolve(__dirname, '..', '..', 'data', 'results.csv')
+    const filePath = path.resolve(__dirname, '..' ,'..', 'data', 'results.csv')
     const text = await readFile(filePath)
 
     console.log('Push started')
@@ -40,7 +40,6 @@ async function pushNewData(data) {
                 const recordHum = record['Humidity']
                 const recordTemp = record['Temperature']
                 const recordTime = record['Timestamp']
-                console.log('Humidite: ' + recordHum + ', Temp :' + recordTemp + ', Time :' + recordTime)
                 newData.push(recordHum + ',' + recordTemp + ',' + recordTime)
             }
         })
@@ -62,7 +61,7 @@ async function pushNewData(data) {
             console.log('New record added')
             let output = newData.join("\n")
             output = 'Humidity,Temperature,Timestamp\n' + output
-            fs.writeFileSync('../../data/results.csv', output);
+            fs.writeFileSync(path.resolve(__dirname, '..' ,'..', 'data', 'results.csv'), output);
             console.log('New csv written')
             resolve()
         })
