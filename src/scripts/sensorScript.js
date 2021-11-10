@@ -12,7 +12,7 @@ const DATA_COLUMNS = [
 ]
 
 command.stdout.on('data', async function (data) {
-    const dataTable = data.split(',')
+    const dataTable = (data + '').split(',')
 
     await pushNewData(dataTable)
 })
