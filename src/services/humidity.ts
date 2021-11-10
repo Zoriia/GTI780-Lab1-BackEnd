@@ -26,7 +26,7 @@ export async function getCurrentHumidity(): Promise<any> {
   if (allHum.length === 0)
     throw new Error("Aucune humidité n'est disponible");
 
-  return Object.values(allHum.pop() || {timestamp: new Date(), humidity: 0})
+  return allHum.pop()?.humidity || 0
 }
 
 export async function getHumidityEntries(nbOfEntries: number): Promise<any[]> {
