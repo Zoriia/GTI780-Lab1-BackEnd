@@ -1,6 +1,6 @@
 var parse = require('csv-parse').parse
-var path = require('path')()
-var fs = require('fs')()
+var path = require('path').path
+var fs = require('fs').fs
 var spawn = require('child_process').spawn
 
 const command = spawn('sudo', ['python3', 'humid.py']);
