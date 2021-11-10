@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "a6e365f1-1f79-47b1-bf42-d29c51f533bc",
+		"name": "gti525-backend",
+		"description": "A collection of requests used to test and debug the gti525-backend server.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Météo Média",
+			"item": [
+				{
+					"name": "Daily Data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&stationID=118&Year=2020&Month=10&Day=20&timeframe=1&submit=%20Download+Data",
+							"protocol": "https",
+							"host": [
+								"climate",
+								"weather",
+								"gc",
+								"ca"
+							],
+							"path": [
+								"climate_data",
+								"bulk_data_e.html"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "csv"
+								},
+								{
+									"key": "stationID",
+									"value": "118"
+								},
+								{
+									"key": "Year",
+									"value": "2020"
+								},
+								{
+									"key": "Month",
+									"value": "10"
+								},
+								{
+									"key": "Day",
+									"value": "20"
+								},
+								{
+									"key": "timeframe",
+									"value": "1"
+								},
+								{
+									"key": "submit",
+									"value": "%20Download+Data"
+								}
+							]
+						},
+						"description": "Returns the daily data for a day in the past"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Stations",
+			"item": [
+				{
+					"name": "Get All Stations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base-url}}/stations",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"stations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Station Data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base-url}}/stations/118",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"stations",
+								"118"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Climate",
+			"item": [
+				{
+					"name": "Get Climate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base-url}}/stations/118/climate?year=2020&month=10&day=20",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"stations",
+								"118",
+								"climate"
+							],
+							"query": [
+								{
+									"key": "year",
+									"value": "2020"
+								},
+								{
+									"key": "month",
+									"value": "10"
+								},
+								{
+									"key": "day",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Forecast",
+			"item": [
+				{
+					"name": "Get Station Forecast",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base-url}}/stations/118/forecast",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"stations",
+								"118",
+								"forecast"
+							]
+						},
+						"description": "Returns the forecast information for the given station by its unique identifier."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base-url}}/ping",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"ping"
+					]
+				},
+				"description": "An example request to the gti525-backend server."
+			},
+			"response": []
+		}
+	]
+}
