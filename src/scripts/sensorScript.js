@@ -4,7 +4,8 @@ var fs = require('fs')
 var spawn = require('child_process').spawn
 var mqtt = require('mqtt')
 
-const command = spawn('sudo', ['python3', 'src/scripts/humid.py'])
+const commandStartSensor = spawn('sudo', ['python3', 'src/scripts/humid.py'])
+const commandStartLed = spawn('sudo', ['python3', 'src/scripts/rgb_alert.py'])
 const client  = mqtt.connect('ws://localhost:9001')
 client.on('connect', function () {
     console.log('Connecté au broker MQTT')
@@ -16,13 +17,13 @@ const DATA_COLUMNS = [
     'Timestamp'
 ]
 
-command.stdout.on('data', async function (data) {
+commandStartSensor.stdout.on('data', async function (data) {
     const dataTable = (data + '').split(',')
 
     await pushNewData(dataTable)
 })
 
-command.stderr.on('data', function (data) {
+commandStartSensor.stderr.on('data', function (data) {
     console.log('Une erreur s\'est produite. Erreur:' + data)
 })
 
@@ -79,4 +80,10 @@ async function readFile(path){
             }
         })
     })
+}
+
+
+// Code found on https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
+function rgbToHex(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
