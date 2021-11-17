@@ -6,6 +6,9 @@ var mqtt = require('mqtt')
 
 const command = spawn('sudo', ['python3', 'src/scripts/humid.py'])
 const client  = mqtt.connect('mqtt://192.168.2.29:9001')
+client.on('connect', function () {
+    console.log('Connecté au broker MQTT')
+})
 
 const DATA_COLUMNS = [
     'Humidity',
@@ -27,8 +30,6 @@ async function pushNewData(data) {
     const filePath = path.resolve(__dirname, '..' ,'..', 'data', 'results.csv')
     const text = await readFile(filePath)
 
-    console.log('Push started')
-
     return await new Promise(function (resolve, reject) {
         const parser = parse(text, {
             columns: DATA_COLUMNS,
@@ -36,7 +37,6 @@ async function pushNewData(data) {
         })
         const newData = []
         parser.on('readable', function () {
-            console.log('Read started')
             let record
             while ((record = parser.read()) != null) {
                 const recordHum = record['Humidity']
