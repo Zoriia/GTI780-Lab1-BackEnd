@@ -5,7 +5,7 @@ var spawn = require('child_process').spawn
 var mqtt = require('mqtt')
 
 const command = spawn('sudo', ['python3', 'src/scripts/humid.py'])
-const client  = mqtt.connect('mqtt://192.168.2.29:9001')
+const client  = mqtt.connect('mqtt://broker.mqttdashboard.com')
 client.on('connect', function () {
     console.log('Connecté au broker MQTT')
 })
@@ -53,7 +53,6 @@ async function pushNewData(data) {
         const humidity = data[0]
         const temperature = data[1].replace(/(\r\n|\n|\r)/gm, '')
         parser.on('end', function () {
-            console.log('Reading ended')
             client.publish('/gti780a2021/equipe09/temperature', temperature)
             client.publish('/gti780a2021/equipe09/humidite', humidity)
             if (newData.length >= 50)
@@ -62,11 +61,9 @@ async function pushNewData(data) {
             const todayText = today.toLocaleString('en-US', { hour12: false }).replace(',','')
             console.log(humidity + ',' + temperature + ',' + todayText)
             newData.push(`${humidity},${temperature},${todayText}`)
-            console.log('New record added')
             let output = newData.join("\n")
             output = 'Humidity,Temperature,Timestamp\n' + output
             fs.writeFileSync(path.resolve(__dirname, '..' ,'..', 'data', 'results.csv'), output);
-            console.log('New csv written')
             resolve()
         })
     })
