@@ -27,6 +27,14 @@ commandStartSensor.stderr.on('data', function (data) {
     console.log('Une erreur s\'est produite. Erreur:' + data)
 })
 
+commandStartLed.stdout.on('data', async function (data) {
+    console.log('Changement de couleur')
+})
+
+commandStartLed.stderr.on('data', function (data) {
+    console.log('Une erreur s\'est produite. Erreur:' + data)
+})
+
 async function pushNewData(data) {
     const filePath = path.resolve(__dirname, '..' ,'..', 'data', 'results.csv')
     const text = await readFile(filePath)
