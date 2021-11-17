@@ -2,8 +2,10 @@ var parse = require('csv-parse')
 var path = require('path')
 var fs = require('fs')
 var spawn = require('child_process').spawn
+var mqtt = require('mqtt')
 
-const command = spawn('sudo', ['python3', 'src/scripts/humid.py']);
+const command = spawn('sudo', ['python3', 'src/scripts/humid.py'])
+const client  = mqtt.connect('mqtt://192.168.2.29:9001')
 
 const DATA_COLUMNS = [
     'Humidity',
@@ -52,6 +54,8 @@ async function pushNewData(data) {
         const temperature = data[1].replace(/(\r\n|\n|\r)/gm, '')
         parser.on('end', function () {
             console.log('Reading ended')
+            client.publish('/gti780a2021/equipe09/temperature', temperature)
+            client.publish('/gti780a2021/equipe09/humidite', humidity)
             if (newData.length >= 50)
                 newData.splice(0,1)
             const today = new Date()
