@@ -5,7 +5,7 @@ var spawn = require('child_process').spawn
 var mqtt = require('mqtt')
 
 const command = spawn('sudo', ['python3', 'src/scripts/humid.py'])
-const client  = mqtt.connect('mqtt://broker.mqttdashboard.com')
+const client  = mqtt.connect('ws://localhost:9001')
 client.on('connect', function () {
     console.log('Connecté au broker MQTT')
 })
